@@ -1,0 +1,11 @@
+{
+    "cSpell.words": [
+        "chrono",
+        "dotenvy",
+        "jsonwebtoken",
+        "rngs",
+        "rustls",
+        "serde",
+        "sqlx"
+    ]
+}
