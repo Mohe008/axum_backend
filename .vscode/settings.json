@@ -1,11 +1,13 @@
 {
-    "cSpell.words": [
-        "chrono",
-        "dotenvy",
-        "jsonwebtoken",
-        "rngs",
-        "rustls",
-        "serde",
-        "sqlx"
-    ]
+  "cSpell.words": [
+    "Azad",
+    "chrono",
+    "dotenvy",
+    "Hasan",
+    "jsonwebtoken",
+    "rngs",
+    "rustls",
+    "serde",
+    "sqlx"
+  ]
 }

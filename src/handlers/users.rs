@@ -1,7 +1,7 @@
 use axum::{
     Json, extract::{Path, Query, State}, http::StatusCode,
 };
-use sea_orm::{ActiveModelTrait, ColumnTrait, Condition, DatabaseConnection, EntityTrait, ModelTrait, PaginatorTrait, QueryFilter, Set};
+use sea_orm::{ActiveModelTrait, ColumnTrait, Condition, DatabaseConnection, EntityTrait, ModelTrait, PaginatorTrait, QueryFilter, Set, sea_query::Expr};
 use validator::Validate;
 
 use crate::{entities::{courses, prelude::*, users}, links::UserCourses};
@@ -54,6 +54,7 @@ pub async fn create_user(
         email: Set(payload.email),
         password: Set(password),
         role: Set(payload.role),
+        metadata: Set(payload.metadata),
         department_id: Set(payload.department_id),
         phone_number: Set(payload.phone_number),
         ..Default::default()
@@ -91,6 +92,9 @@ pub async fn update_user(
     }
     if let Some(is_active) = payload.is_active {
         user.is_active = Set(is_active);
+    }
+    if let Some(metadata) = payload.metadata {
+        user.metadata = Set(Some(metadata));
     }
     if let Some(department_id) = payload.department_id {
         user.department_id = Set(Some(department_id));
@@ -190,6 +194,15 @@ pub async fn search_user(
             Condition::any()
             .add(users::Column::Name.ilike(&pattern))
             .add(users::Column::Email.ilike(&pattern)),
+        );
+    }
+
+    if let Some(min_cgpa) = params.min_cgpa {
+        condition = condition.add(
+            Expr::cust_with_values(
+                "(metadata->>'cgpa')::float >= $1",
+                [min_cgpa]
+            )
         );
     }
 

@@ -6,4 +6,6 @@ pub mod models;
 pub mod routes;
 pub mod error;
 pub mod auth;
+
+#[cfg(test)]
 pub mod tests;

@@ -1,4 +1,5 @@
 use serde::{Deserialize, Serialize};
+use serde_json::Value;
 use validator::{Validate, ValidationError};
 
 use crate::entities::{departments, enrollments, payments, users};
@@ -24,7 +25,8 @@ pub struct CreateUser {
     #[validate(custom(function = "validate_role", message = "Role must be either 'student' or 'professor'"))]
     pub role: String,
     pub department_id: Option<i32>,
-    pub phone_number: Option<String>
+    pub phone_number: Option<String>,
+    pub metadata: Option<Value>
 }
 
 #[derive(Deserialize, Validate)]
@@ -36,6 +38,7 @@ pub struct UpdateUser {
     #[validate(custom(function = "validate_role", message = "Role must be either 'student' or 'professor'"))]
     pub role: Option<String>,
     pub is_active: Option<bool>,
+    pub metadata: Option<Value>,
     pub department_id: Option<i32>,
     pub phone_number: Option<String>
 }
@@ -67,7 +70,8 @@ pub struct SearchParams {
     pub role: Option<String>,
     pub is_active: Option<bool>,
     pub department_id: Option<i32>,
-    pub search: Option<String>
+    pub search: Option<String>,
+    pub min_cgpa: Option<f64>
 }
 
 #[derive(Deserialize)]

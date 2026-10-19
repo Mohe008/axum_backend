@@ -1,0 +1,27 @@
+services:
+  db:
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: mdmohe190
+      POSTGRES_DB: college_management
+    ports:
+      - "5433:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql
+
+  app:
+    build: .
+    restart: always
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: postgres://postgres:mdmohe190@db:5432/college_management
+      JWT_SECRET: change_this_to_a_long_random_secret_string
+      RUST_LOG: info,sqlx=warn,tower_http=debug
+    ports:
+      - "3000:3000"
+
+volumes:
+  pgdata:
